@@ -1,15 +1,19 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.List;
 
 public class classPalindrom {
-    private Long multiplier1 = 0l;
-    private Long multiplier2 = 0l;
-    private Long palindrom = 0l;
+    private Integer multiplier1 = 0;
+    private Integer multiplier2 = 0;
+    private Long palindrom = 0L;
 
-    public Long getPalindrom(List<Long> listPrimeNumbers, Integer iterator){
+    public Long getPalindrom(List<Integer> listPrimeNumbers, Integer iterator){
         for (int i = iterator; i < listPrimeNumbers.size() && i < iterator + 30; i++){
             for (int j = iterator; j < listPrimeNumbers.size() && j < iterator + 30; j++){
-                Long temp = listPrimeNumbers.get(i) * listPrimeNumbers.get(j);
-                Boolean resultChecking = checkOnPalindrom(temp);
+                Long temp = (long)listPrimeNumbers.get(i) * listPrimeNumbers.get(j);
+                Boolean resultChecking = checkOnPalindrom(temp); //7942552497
+                System.out.println(temp);
+
                 if (resultChecking && palindrom < temp){
                     multiplier1 = listPrimeNumbers.get(i);
                     multiplier2 = listPrimeNumbers.get(j);
@@ -20,31 +24,51 @@ public class classPalindrom {
         return palindrom;
     }
 
-    public Long getMultiplier1() {
+    public Long getPalindrom1(List<Integer> listPrimeNumbers){
+        for (int i = 0; i < listPrimeNumbers.size(); i++){
+//            System.out.println(listPrimeNumbers.get(i) + " Multiplier1");
+            for (int j = 0; j < listPrimeNumbers.size(); j++){
+                Long temp = (long)listPrimeNumbers.get(i) * listPrimeNumbers.get(j);
+                Boolean resultChecking = checkOnPalindrom(temp); //7942552497
+//                System.out.println(temp + " " + listPrimeNumbers.get(i) + " * " + listPrimeNumbers.get(j));
+
+//                if(listPrimeNumbers.get(i) == 99_001){
+////                    System.out.println("Palindrome : " + temp + " " + multiplier1 + " * " + multiplier2);
+//                    System.out.println(listPrimeNumbers.get(j));
+//                } else if (listPrimeNumbers.get(i) == 98_879){
+//                    System.out.println();
+//                    System.out.println(listPrimeNumbers.get(j));
+//                }
+
+                if (resultChecking && palindrom < temp){
+                    multiplier1 = listPrimeNumbers.get(i);
+                    multiplier2 = listPrimeNumbers.get(j);
+                    palindrom = temp;
+                }
+            }
+        }
+        return palindrom;
+    }
+
+    public Integer getMultiplier1() {
         return multiplier1;
     }
 
-    public Long getMultiplier2() {
+    public Integer getMultiplier2() {
         return multiplier2;
     }
 
     private Boolean checkOnPalindrom(Long number){
-        Integer trueValue = 0;
         String stringNumber = Long.toString(number);
-        char[] charNumbers = stringNumber.toCharArray();
+        String reverseString = recursiveReverse(stringNumber);
 
-        for (int i = 0; i<charNumbers.length; i++){
-            int val1 = Character.getNumericValue(charNumbers[i]);
-            int val2 = Character.getNumericValue(charNumbers[(charNumbers.length - 1) - i]);
-            if(val1 == val2){
-                trueValue++;
-            }
+        return stringNumber.equals(reverseString);
+    }
+
+    private String recursiveReverse(String str){
+        if ((null == str) || (str.length() <= 1)){
+            return str;
         }
-
-        if (trueValue == 10){
-            return true;
-        }
-
-        return false;
+        return recursiveReverse(str.substring(1)) + str.charAt(0);
     }
 }

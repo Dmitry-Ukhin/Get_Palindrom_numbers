@@ -1,34 +1,65 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class MyThread extends Thread{
-    private Integer iterator = 0;
-    private List<Long> listPrimeNumbers;
-    private Long result = 0l;
-    private Long multiplier1 = 0l;
-    private Long multiplier2 = 0l;
+public class MyThread extends Thread {
+    private List<Integer> primeNumbersOld;
+    private List<Integer> primeNumbersNew = new ArrayList<>();
 
-    public MyThread(List<Long> list, Integer iterator){
-        this.iterator = iterator;
-        this.listPrimeNumbers = list;
-    }
+    private Long result = 0L;
+
+    private Boolean stopFlag = false;
+    private Integer isInterapted = 0;
+    private String nameThread;
 
     @Override
     public void run() {
-        classPalindrom palindrom = new classPalindrom();
-        result = palindrom.getPalindrom(listPrimeNumbers, iterator);
-        multiplier1 = palindrom.getMultiplier1();
-        multiplier2 = palindrom.getMultiplier2();
+        while (!stopFlag){
+            if (primeNumbersOld != primeNumbersNew){
+                nameThread = this.currentThread().getName();
+
+                classPalindrom palindrom = new classPalindrom();
+                result = palindrom.getPalindrom1(primeNumbersNew);
+
+                if (result == 0){
+                    System.out.println("Palindrome not found " + nameThread);
+                } else {
+                    System.out.println(result + " " + nameThread);
+                    Runner.setBigPalindrome(result, palindrom.getMultiplier1(), palindrom.getMultiplier2());
+                }
+
+                primeNumbersOld = primeNumbersNew;
+                isInterapted = 0;
+            } else {
+                try {
+                    this.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        isInterapted = 1;
+
     }
 
-    public Long getMultiplier1() {
-        return multiplier1;
+    public void setStopFlag(Boolean stopFlag) {
+        this.stopFlag = stopFlag;
     }
 
-    public Long getMultiplier2() {
-        return multiplier2;
+    public void setPrimeNumbersNew(List<Integer> primeNumbers) {
+        this.primeNumbersOld = primeNumbersNew;
+        this.primeNumbersNew = primeNumbers;
+//        System.out.println("listUpdate");
     }
 
     public Long getResult() {
         return result;
+    }
+
+    public String getNameThread() {
+        return nameThread;
+    }
+
+    public Integer getIsInterapted() {
+        return isInterapted;
     }
 }
