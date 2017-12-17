@@ -8,7 +8,6 @@ public class MyThread extends Thread {
     private Long result = 0L;
 
     private Boolean stopFlag = false;
-    private Integer isInterapted = 0;
     private String nameThread;
 
     @Override
@@ -28,7 +27,6 @@ public class MyThread extends Thread {
                 }
 
                 primeNumbersOld = primeNumbersNew;
-                isInterapted = 0;
             } else {
                 try {
                     this.sleep(10);
@@ -37,8 +35,6 @@ public class MyThread extends Thread {
                 }
             }
         }
-        isInterapted = 1;
-
     }
 
     public void setStopFlag(Boolean stopFlag) {
@@ -59,7 +55,4 @@ public class MyThread extends Thread {
         return nameThread;
     }
 
-    public Integer getIsInterapted() {
-        return isInterapted;
-    }
 }
